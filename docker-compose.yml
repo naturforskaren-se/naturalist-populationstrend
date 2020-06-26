@@ -1,28 +1,27 @@
-fs.jekyll:
-  image: tianon/true
-  volumes:
-    - ./src:/src
+version: '3.7'
 
-fs.sbt:
-  image: tianon/true
-  volumes:
-    - ./src/_site:/usr/share/nginx/html:rw
-    - ./nginx-conf:/etc/nginx/conf.d:rw
-    - ./nginx-certs:/etc/nginx/ssl:rw
-    - ./nginx-logs:/etc/nginx/logs:rw
+services:
 
-jekyll:
-  image: jekyll/jekyll:3.1.3
-  command: bundle exec jekyll build --incremental --watch
-  volumes:
-    - ./src:/srv/jekyll
+  jekyll:
+    image: jekyll/jekyll:3.1.3
+    container_name: jekyll
+    command: bundle exec jekyll build --incremental --watch
+    volumes:
+      - ./src:/srv/jekyll
 
-sbt:
-  image: nginx
-  ports:
-    - "80:80"
-    - "443:443"
-  volumes_from:
-    - fs.sbt
-
-
+  sbt:
+    image: nginx
+    environment:
+     - VIRTUAL_HOST=populationstrend.naturforskaren.se
+       #- VIRTUAL_PROTO=https
+       #- VIRTUAL_PORT=443
+    volumes:
+     - ./src/_site:/usr/share/nginx/html:rw
+       #- ./nginx-conf:/etc/nginx/conf.d:rw
+       # - ./nginx-certs:/etc/nginx/ssl:rw
+     - ./nginx-logs:/etc/nginx/logs:rw
+      
+networks:
+  default:
+    external:
+       name: proxy_default

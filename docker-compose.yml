@@ -13,12 +13,8 @@ services:
     image: nginx
     environment:
      - VIRTUAL_HOST=populationstrend.naturforskaren.se
-       #- VIRTUAL_PROTO=https
-       #- VIRTUAL_PORT=443
     volumes:
      - ./src/_site:/usr/share/nginx/html:rw
-       #- ./nginx-conf:/etc/nginx/conf.d:rw
-       # - ./nginx-certs:/etc/nginx/ssl:rw
      - ./nginx-logs:/etc/nginx/logs:rw
       
 networks:

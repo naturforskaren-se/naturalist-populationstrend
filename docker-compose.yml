@@ -1,5 +1,9 @@
 version: '3.7'
 
+networks:
+  naturalist:
+    external: true
+
 services:
 
   jekyll:
@@ -17,7 +21,5 @@ services:
      - ./src/_site:/usr/share/nginx/html:rw
      - ./nginx-logs:/etc/nginx/logs:rw
       
-networks:
-  default:
-    external:
-       name: proxy_default
+    networks:
+     - naturalist
